@@ -9,33 +9,36 @@ public class Twitter {
 
     // Cria o usuário dentro de um array
     public static Usuario criaUsuario() {
+
         System.out.print("Crie o seu nome: ");
         String nome = leitor.nextLine();
-        String teste = "";
-        System.out.print("Crie seu login: ");
-        String loginExiste = leitor.nextLine();
-        while(teste != "DeuCerto"){
-            for(Usuario usuario : usuarios){
-                if(usuario.getLogin().equals(loginExiste)){
-                    System.out.println(	"Usuario já existe");
-                    teste = "DeuCerto";
-                }else{
-                    loginExiste = leitor.nextLine();
+
+        String login = "";
+        boolean loginExistente = true;
+
+        //enquanto for verdadeiro ele vai entrar
+        while (loginExistente) {
+            System.out.print("Crie o seu login: ");
+            login = leitor.nextLine();
+
+            loginExistente = false;
+            for (Usuario usuario : usuarios) {
+                if (usuario.getLogin().equals(login)) {
+                    System.out.println("Login já existente. Por favor, escolha o outro.");
+                    loginExistente = true;
+                    break;
                 }
             }
-
         }
-        String login = loginExiste;
+
         System.out.print("Crie seu email: ");
         String email = leitor.nextLine();
         System.out.print("Crie sua senha: ");
         String senha = leitor.nextLine();
 
         Usuario novoUsuario = new Usuario(nome, login, email, senha);
-
-
-
         usuarios.add(novoUsuario);
+
         return novoUsuario;
     }
 
@@ -83,6 +86,7 @@ public class Twitter {
         }
 
     }
+
 
     public static void main(String[] args) {
         String text = "";
