@@ -6,6 +6,7 @@ public class Twitter {
     public static Scanner leitor = new Scanner(System.in);
     public static ArrayList<Usuario> usuarios = new ArrayList<>();
     public static Usuario usuarioLogado = null;
+    public static ArrayList<String> tweets = new ArrayList<>();
 
     // Cria o usuário dentro de um array
     public static Usuario criaUsuario() {
@@ -17,15 +18,16 @@ public class Twitter {
         boolean loginExistente = true;
 
         //enquanto for verdadeiro ele vai entrar
-        while (loginExistente) {
+        while (loginExistente == true) {
             System.out.print("Crie o seu login: ");
             login = leitor.nextLine();
 
             loginExistente = false;
             for (Usuario usuario : usuarios) {
                 if (usuario.getLogin().equals(login)) {
-                    System.out.println("Login já existente. Por favor, escolha o outro.");
+                    System.out.println("Login já existente. Por favor, tente novamente");
                     loginExistente = true;
+                    login = "";
                     break;
                 }
             }
@@ -87,6 +89,44 @@ public class Twitter {
 
     }
 
+    public static void tweetar() {
+        if (usuarioLogado == null) {
+            System.out.println("Nenhum usuário logado. Faça o login primeiro.");
+            return;
+        }
+        System.out.println("Digite o seu tweet: ");
+        String conteudoTweet = leitor.nextLine();
+
+        String tweet = usuarioLogado.getNome() + ": " + conteudoTweet;
+        tweets.add(tweet);
+        System.out.println("Tweet enviado!");
+    }
+
+    public static void MostraTweetsFeed() {
+        System.out.println("Digite a quantidade de tweets que deseja visualizar: ");
+        int quant = leitor.nextInt();
+        System.out.println("Tweets do feed: ");
+        for(int i = (quant - 1); i >= 0; i--) {
+                System.out.println(tweets.get(i));
+        }
+    }
+
+    public static void MostraTweetsUsuario() {
+        if (usuarioLogado == null) {
+            System.out.println("Nenhum usuário logado. Faça o login primeiro.");
+            return;
+        }
+        
+        System.out.println("Tweets do usuario: ");
+        for(String tweet : tweets) {
+            if(tweet.contains(usuarioLogado.getNome() + ":")){
+                System.out.println(tweet);
+            }
+        }
+    }
+
+
+
 
     public static void main(String[] args) {
         String text = "";
@@ -106,7 +146,7 @@ public class Twitter {
                 } else if (text.equalsIgnoreCase("Logar usuario")) {
                     logUsuario(usuarios);
                 } else if (text.equalsIgnoreCase("Mostrar Tweets do Feed")) {
-
+                    MostraTweetsFeed();
                 } else if (text.equalsIgnoreCase("Imprimir Estatísticas")) {
 
                 } else if (text.equalsIgnoreCase("Finalizar Programa")) {
@@ -119,16 +159,16 @@ public class Twitter {
             
             for(Usuario usuario : usuarios) {
                 while(usuario.logado == true){
-                    System.out.println("-- Tweetar\n-- Mostrar Tweets do Feed\n-- Listar Usuários\n-- Remover Tweet de um Usuário\n-- Alterar Senha de um Usuário\n-- Imprimir Estatísticas\n-- Deslogar Usuário\n-- Remover um Usuário\n-- Finalizar Programa");
+                    System.out.println("-- Tweetar\n-- Mostrar Tweets do Feed\n-- Listar Usuários\n-- Remover Tweets do seu Usuário\n-- Alterar Senha do Usuário\n-- Imprimir Estatísticas\n-- Deslogar Usuário\n-- Remover um Usuário\n-- Finalizar Programa");
                     text = leitor.nextLine();
-                    if (text.equalsIgnoreCase("Twittar")) {
-                        
+                    if (text.equalsIgnoreCase("Tweetar")) {
+                        tweetar();
                     } else if (text.equalsIgnoreCase("Mostrar Tweets do Feed")) {
-
+                        MostraTweetsFeed();
                     } else if (text.equalsIgnoreCase("Listar usuarios")) {
                         listaUsuarios();
-                    } else if (text.equalsIgnoreCase("Remover twittes do seu usuario")) {
-                        
+                    } else if (text.equalsIgnoreCase("Remover tweets do seu Usuario")) {
+                        MostraTweetsUsuario();
                     } else if (text.equalsIgnoreCase("Alterar senha do usuario")) {
                         
                     } else if (text.equalsIgnoreCase("Imprimir Estatisticas")) {
@@ -148,3 +188,4 @@ public class Twitter {
         }
     }
 }
+
