@@ -112,13 +112,34 @@ public class Twitter {
                 System.out.println("Tweet enviado!");
             }
         }
-
-
-
-       
-
     }
 
+    public static void alterarSenha(Usuario usuario) {
+        if (!usuario.isLogado()) {
+            System.out.println("O usuário não está logado.");
+            return;
+        }
+        
+        System.out.print("Digite a senha atual: ");
+        String senhaAtual = leitor.nextLine();
+        
+        if (!senhaAtual.equals(usuario.getSenha())) {
+            System.out.println("Senha incorreta.");
+            return;
+        }
+        
+        System.out.print("Digite a nova senha: ");
+        String novaSenha = leitor.nextLine();
+        
+        while (novaSenha.length() < 6 || novaSenha.length() > 15) {
+            System.out.println("A senha deve ter entre 6 e 15 caracteres.");
+            System.out.print("Digite a nova senha: ");
+            novaSenha = leitor.nextLine();
+        }
+        
+        usuario.setSenha(novaSenha);
+        System.out.println("Senha alterada com sucesso.");
+    }
     public static void main(String[] args) {
         String text = "";
         boolean finalizar = false;
