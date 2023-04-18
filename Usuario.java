@@ -13,7 +13,11 @@ class Usuario {
 
     public void setLogado(boolean logado){
         this.logado = logado;
-  
+        
+    }
+
+    public Boolean getLogado(boolean logado){
+        return logado;
     }
 
     public String getNome() {
