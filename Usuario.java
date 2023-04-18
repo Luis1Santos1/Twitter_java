@@ -10,7 +10,6 @@ class Usuario {
         this.logado = false;
     }
 
-
     public void setLogado(boolean logado){
         this.logado = logado;
         

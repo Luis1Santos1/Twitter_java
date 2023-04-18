@@ -46,7 +46,7 @@ public class Twitter {
     // lista usuarios cadastrados
     public static void listaUsuarios() {
         for (Usuario usuario : usuarios) {
-            System.out.println("Usuario: " + usuario.getLogin() + );
+            System.out.println("Usuario: " + usuario.getLogin());
         }
     }
 
@@ -64,7 +64,7 @@ public class Twitter {
                 System.out.println("Usuario logado: " + usuario.getLogin());
                 return;
             } else {
-                System.out.println("Usuário incorreto");
+                System.out.println("Usuario ou senha incorreto");
             }
         }
     }
@@ -76,7 +76,7 @@ public class Twitter {
         for (Usuario usuario : usuarios) {
             if (usuario.logado == true) {
                 if (usuario.getLogin().equals(deslogar)) {
-                    usuarioLogado = null;
+
                     usuario.setLogado(false);
                     System.out.println("Usuário deslogado!");
                 } else {
@@ -85,19 +85,6 @@ public class Twitter {
             }
         }
 
-    }
-
-    public static void tweetar() {
-        if (usuarioLogado == null) {
-            System.out.println("Nenhum usuário logado. Faça o login primeiro.");
-            return;
-        }
-        System.out.println("Digite o seu tweet: ");
-        String conteudoTweet = leitor.nextLine();
-
-        String tweet = usuarioLogado.getNome() + ": " + conteudoTweet;
-        tweets.add(tweet);
-        System.out.println("Tweet enviado!");
     }
 
     public static void MostraTweetsFeed() {
@@ -109,41 +96,67 @@ public class Twitter {
         }
     }
 
-    public static void MostraTweetsUsuario() {
-        if (usuarioLogado == null) {
-            System.out.println("Nenhum usuário logado. Faça o login primeiro.");
-            return;
-        }
 
-        System.out.println("Tweets do usuario: ");
-        for (String tweet : tweets) {
-            if (tweet.contains(usuarioLogado.getNome() + ":")) {
-                System.out.println(tweet);
+    public static void tweetar() {
+
+        for (Usuario usuario : usuarios) {
+            if (usuario.logado == false) {
+                System.out.println("Nenhum usuário logado. Faça o login primeiro.");
+                return;
+            }else{
+                System.out.println("Digite o seu tweet: ");
+                String conteudoTweet = leitor.nextLine();
+        
+                String tweet = usuario.getNome() + ": " + conteudoTweet;
+                tweets.add(tweet);
+                System.out.println("Tweet enviado!");
             }
         }
+
+
+
+       
+
     }
 
     public static void main(String[] args) {
         String text = "";
         boolean finalizar = false;
 
-        while(!finalizar){
-            System.out.println("-- 1 Cadastrar Usuário\n-- 2 Listar Usuários\n-- 3 Logar Usuário\n-- 4 Mostrar últimos N tweets do feed\n-- 0 Finalizar Programa");
+        while (!finalizar) {
+            System.out.println(
+                    "-- 1 Cadastrar Usuário\n-- 2 Listar Usuários\n-- 3 Logar Usuário\n-- 4 Deslogar Usuario\n-- 5 Tweetar\n-- 6 mostrar últimos N tweets do feed\n-- 7 remover tweet de um usuário\n-- 8 alterar senha de um usuário\n-- 9 remover um usuário\n-- 10 imprimir estatísticas\n-- 0 Finalizar Programa");
 
-        text = leitor.nextLine();
+            text = leitor.nextLine();
 
-        if (text.equals("1")) {
-            criaUsuario();
-        } else if (text.equals("2")) {
-            listaUsuarios();
-        } else if (text.equals("3")) {
-            logUsuario(usuarios);
-        } else if (text.equals("4")) {
-            MostraTweetsFeed();
-        } else if (text.equals("0")) {
-            System.out.println("Encerrando o programa...");
-            finalizar = true;
-        }
+            if (text.equals("1")) {
+                criaUsuario();
+
+            } else if (text.equals("2")) {
+                listaUsuarios();
+
+            } else if (text.equals("3")) {
+                logUsuario(usuarios);
+
+            } else if (text.equals("4")) {
+                deslogUsuario(usuarios);
+
+            } else if (text.equals("5")) {
+                tweetar();
+            } else if (text.equals("6")) {
+                MostraTweetsFeed();
+            } else if (text.equals("7")) {
+           
+            } else if (text.equals("8")) {
+
+            } else if (text.equals("9")) {
+         
+            } else if (text.equals("10")) {
+         
+            } else if (text.equals("0")) {
+                System.out.println("Encerrando o programa...");
+                finalizar = true;
+            }
         }
     }
 
