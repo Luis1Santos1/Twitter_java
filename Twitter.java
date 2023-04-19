@@ -10,7 +10,7 @@ public class Twitter {
     // Cria o usuário dentro de um array
     public static Usuario criaUsuario() {
 
-        System.out.print("Crie o seu nome: ");
+        System.out.print("\nCrie o seu nome: ");
         String nome = leitor.nextLine();
 
         String login = "";
@@ -24,14 +24,13 @@ public class Twitter {
             loginExistente = false;
             for (Usuario usuario : usuarios) {
                 if (usuario.getLogin().equals(login)) {
-                    System.out.println("Login já existente. Por favor, tente novamente");
+                    System.out.println("Login já existente. Por favor, tente novamente. \n");
                     loginExistente = true;
                     login = "";
                     break;
                 }
             }
         }
-
         System.out.print("Crie seu email: ");
         String email = leitor.nextLine();
         System.out.print("Crie sua senha: ");
@@ -40,13 +39,16 @@ public class Twitter {
         Usuario novoUsuario = new Usuario(nome, login, email, senha);
         usuarios.add(novoUsuario);
 
+        System.out.print("\nUsuário Cadastrado!\n");
+
         return novoUsuario;
     }
 
     // lista usuarios cadastrados
     public static void listaUsuarios() {
+        System.out.println("\nUsuarios cadastrados: \n");
         for (Usuario usuario : usuarios) {
-            System.out.println("Usuario: " + usuario.getLogin());
+            System.out.println("\nUsuario: " + usuario.getLogin() + " || Status: " + usuario.getLogado() + "");
         }
     }
 
@@ -56,67 +58,77 @@ public class Twitter {
         String login = leitor.nextLine();
         System.out.print("Digite sua senha para logar: \n");
         String senha = leitor.nextLine();
-
+        boolean loginEfetuado = false;
         for (Usuario usuario : usuarios) {
             if (usuario.getLogin().equals(login) && usuario.getSenha().equals(senha)) {
                 usuario.setLogado(true);
-                System.out.println("Usuário logado com sucesso!");
-                System.out.println("Usuario logado: " + usuario.getLogin());
-                return;
-            } else {
-                System.out.println("Usuario ou senha incorreto");
+                System.out.println("\nUsuário logado com sucesso!");
+                System.out.println("\nUsuario logado: " + usuario.getLogin());
+                loginEfetuado = true;
+                break;
             }
+        }
+        if (!loginEfetuado){
+            System.out.println("Usuário ou senha incorreto");
         }
     }
 
     public static void deslogUsuario(ArrayList<Usuario> usuarios) {
-        System.out.print("Digite seu login para deslogar: ");
+        System.out.print("\nDigite seu login para deslogar: ");
         String deslogar = leitor.nextLine();
-
+        boolean usuarioDeslogado = false;
         for (Usuario usuario : usuarios) {
             if (usuario.logado == true) {
                 if (usuario.getLogin().equals(deslogar)) {
-
                     usuario.setLogado(false);
-                    System.out.println("Usuário deslogado!");
-                } else {
-                    System.out.println("Usuário não está logado");
+                    System.out.println("\nUsuário deslogado!");
+                    usuarioDeslogado = true;
+                    break;
                 }
             }
         }
-
-    }
-
-    public static void MostraTweetsFeed() {
-        System.out.println("Digite a quantidade de tweets que deseja visualizar: ");
-        int quant = leitor.nextInt();
-        System.out.println("Tweets do feed: ");
-        for (int i = (quant - 1); i >= 0; i--) {
-            System.out.println(tweets.get(i));
+        if (!usuarioDeslogado) {
+            System.out.println("Este usuário não está logado ou não existe.");
         }
     }
 
 
     public static void tweetar() {
-
+        boolean encontrouUsuario = false;
+        System.out.println("\nDigite o login do usuario que deseja tweetar: ");
+        String usuarioParaTweetar = leitor.nextLine();
         for (Usuario usuario : usuarios) {
-            if (usuario.logado == false) {
-                System.out.println("Nenhum usuário logado. Faça o login primeiro.");
-                return;
-            }else{
-                System.out.println("Digite o seu tweet: ");
-                String conteudoTweet = leitor.nextLine();
-        
-                String tweet = usuario.getNome() + ": " + conteudoTweet;
-                tweets.add(tweet);
-                System.out.println("Tweet enviado!");
+            if (usuario.logado == true) {
+                if (usuario.getLogin().equals(usuarioParaTweetar)){ 
+                    System.out.println("\nDigite o seu tweet: ");
+                    String conteudoTweet = leitor.nextLine();
+
+                    String tweet = usuario.getLogin() + ": " + conteudoTweet;
+                    tweets.add(tweet);
+
+                    System.out.println("\nTweet enviado!");
+                    encontrouUsuario = true;
+                    break;
+                }
             }
+        }
+        if (!encontrouUsuario) {
+            System.out.println("Nenhum usuário encontrado ou logado! \n\n");
+        }
+    }
+
+    public static void MostraTweetsFeed() {
+        System.out.println("\nDigite a quantidade de tweets que deseja visualizar: ");
+        int quant = leitor.nextInt();
+        System.out.println("\nTweets do feed: \n");
+        for (int i = (quant - 1); i >= 0; i--) {
+            System.out.println(tweets.get(i) + "\n");
         }
     }
 
     public static void alterarSenha(Usuario usuario) {
-        if (!usuario.isLogado()) {
-            System.out.println("O usuário não está logado.");
+        if (!usuario.getLogado()) {
+            System.out.println("O usuário não está logado. \n\n");
             return;
         }
         
@@ -124,7 +136,7 @@ public class Twitter {
         String senhaAtual = leitor.nextLine();
         
         if (!senhaAtual.equals(usuario.getSenha())) {
-            System.out.println("Senha incorreta.");
+            System.out.println("Senha incorreta. \n");
             return;
         }
         
@@ -146,7 +158,7 @@ public class Twitter {
 
         while (!finalizar) {
             System.out.println(
-                    "-- 1 Cadastrar Usuário\n-- 2 Listar Usuários\n-- 3 Logar Usuário\n-- 4 Deslogar Usuario\n-- 5 Tweetar\n-- 6 mostrar últimos N tweets do feed\n-- 7 remover tweet de um usuário\n-- 8 alterar senha de um usuário\n-- 9 remover um usuário\n-- 10 imprimir estatísticas\n-- 0 Finalizar Programa");
+                    "\n-- 1 Cadastrar Usuário\n-- 2 Listar Usuários\n-- 3 Logar Usuário\n-- 4 Deslogar Usuario\n-- 5 Tweetar\n-- 6 mostrar últimos N tweets do feed\n-- 7 remover tweet de um usuário\n-- 8 alterar senha de um usuário\n-- 9 remover um usuário\n-- 10 imprimir estatísticas\n-- 0 Finalizar Programa");
 
             text = leitor.nextLine();
 

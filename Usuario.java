@@ -10,15 +10,6 @@ class Usuario {
         this.logado = false;
     }
 
-    public void setLogado(boolean logado){
-        this.logado = logado;
-        
-    }
-
-    public Boolean getLogado(boolean logado){
-        return logado;
-    }
-
     public String getNome() {
         return nome;
     
@@ -34,9 +25,21 @@ class Usuario {
     
     }
 
+    public Boolean getLogado(){
+        return logado;
+    }
+
     public String getSenha() {
         return senha;
-    
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public void setLogado(boolean logado){
+        this.logado = logado;
+        
     }
 
 }
