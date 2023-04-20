@@ -120,38 +120,34 @@ public class Twitter {
     public static void MostraTweetsFeed() {
         System.out.println("\nDigite a quantidade de tweets que deseja visualizar: ");
         int quant = leitor.nextInt();
+        leitor.nextLine();
         System.out.println("\nTweets do feed: \n");
-        for (int i = (quant - 1); i >= 0; i--) {
+        for (int i = (tweets.size() - 1); i >= (tweets.size() - quant); i--) {
             System.out.println(tweets.get(i) + "\n");
         }
     }
 
-    public static void alterarSenha(Usuario usuario) {
-        if (!usuario.getLogado()) {
-            System.out.println("O usuário não está logado. \n\n");
-            return;
-        }
-        
+    public static void alterarSenha(ArrayList<Usuario> usuarios) {
+        boolean usuarioEncontrado = false;
+        System.out.print("\nDigite seu login que deseja mudar a senha: ");
+        String login = leitor.nextLine();
         System.out.print("Digite a senha atual: ");
         String senhaAtual = leitor.nextLine();
-        
-        if (!senhaAtual.equals(usuario.getSenha())) {
-            System.out.println("Senha incorreta. \n");
-            return;
+        for (Usuario usuario : usuarios) {
+            if(login.equals(usuario.getLogin()) && senhaAtual.equals(usuario.getSenha())){
+                System.out.print("Digite a nova senha: ");
+                String novaSenha = leitor.nextLine();
+                usuario.setSenha(novaSenha);
+                System.out.println("Senha alterada com sucesso.");
+                usuarioEncontrado = true;
+                break;
+            }
+            if (!usuarioEncontrado) {
+                System.out.println("Nenhum usuário encontrado ou logado! \n\n");
+            }
         }
-        
-        System.out.print("Digite a nova senha: ");
-        String novaSenha = leitor.nextLine();
-        
-        while (novaSenha.length() < 6 || novaSenha.length() > 15) {
-            System.out.println("A senha deve ter entre 6 e 15 caracteres.");
-            System.out.print("Digite a nova senha: ");
-            novaSenha = leitor.nextLine();
-        }
-        
-        usuario.setSenha(novaSenha);
-        System.out.println("Senha alterada com sucesso.");
     }
+    
     public static void main(String[] args) {
         String text = "";
         boolean finalizar = false;
@@ -181,7 +177,7 @@ public class Twitter {
             } else if (text.equals("7")) {
            
             } else if (text.equals("8")) {
-
+                alterarSenha(usuarios);
             } else if (text.equals("9")) {
          
             } else if (text.equals("10")) {
