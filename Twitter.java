@@ -6,23 +6,27 @@ public class Twitter {
     public static Scanner leitor = new Scanner(System.in);
     public static ArrayList<Usuario> usuarios = new ArrayList<>();
     public static ArrayList<String> tweets = new ArrayList<>();
+    public static String ultimoTweetador;
+    public static String ultimoTweet;
 
     // Cria o usuário dentro de um array
     public static Usuario criaUsuario() {
-
-        boolean nomeNOk = true;
+        boolean nomeNOk = false;
         String nome = "";
 
-        while (nomeNOk == true){
+        while (nomeNOk == false){
             System.out.print("\nCrie o seu nome: ");
             nome = leitor.nextLine();
-
-            nomeNOk = false;
-            if(nome.length() < 2 || nome.length() > 30){
-                System.out.println("O nome deve ter no mínimo 2 e no máximo 30 caracteres!");
+            
+            
+            if(nome.length() >= 2 && nome.length() <= 30){
                 nomeNOk = true;
-                nome = "";
                 break;
+            }
+            else if (nome.length() < 2 || nome.length() > 30) {
+                System.out.println("O nome deve ter entre 2 e 30 caracteres!");
+                nome = "";
+                nomeNOk = false;
             }
         }
 
@@ -40,7 +44,6 @@ public class Twitter {
                     System.out.println("Login já existente. Por favor, tente novamente. \n");
                     loginExistente = true;
                     login = "";
-                    break;
                 }
             }
         }
@@ -59,10 +62,15 @@ public class Twitter {
 
     // lista usuarios cadastrados
     public static void listaUsuarios() {
-        System.out.println("\nUsuarios cadastrados: \n");
-        for (Usuario usuario : usuarios) {
-            System.out.println("\nUsuario: " + usuario.getLogin() + " || Status: " + usuario.getLogado() + "");
+        System.out.println("\nUsuarios cadastrados: ");
+        if(usuarios.size() > 0) {
+            for (Usuario usuario : usuarios) {
+                System.out.println("\nUsuario: " + usuario.getLogin() + " || Status: " + usuario.getLogado() + "");
+            }
+        }else if (usuarios.size() == 0) {
+            System.out.println("Não existe nenhum usuário cadastrado!");
         }
+
     }
 
     // loga em um usuario ja cadastrado
@@ -115,11 +123,14 @@ public class Twitter {
                 if (usuario.getLogin().equals(usuarioParaTweetar)){ 
                     System.out.println("\nDigite o seu tweet: ");
                     String conteudoTweet = leitor.nextLine();
-                    String tweet = usuario.getLogin() + ": " + conteudoTweet;
+                    int indice = tweets.size() + 1;
+                    String tweet = indice + " - " + usuario.getLogin() + ": " + conteudoTweet;
                     tweets.add(tweet);
 
                     System.out.println("\nTweet enviado!");
                     encontrouUsuario = true;
+                    ultimoTweetador = usuario.getLogin();
+                    ultimoTweet = tweet;
                     break;
                 }
             }
@@ -133,10 +144,25 @@ public class Twitter {
         System.out.println("\nDigite a quantidade de tweets que deseja visualizar: ");
         int quant = leitor.nextInt();
         leitor.nextLine();
-        System.out.println("\nTweets do feed: \n");
-        for (int i = (tweets.size() - 1); i >= (tweets.size() - quant); i--) {
-            System.out.println(tweets.get(i) + "\n");
+        if(tweets.size() >= quant){
+            System.out.println("\nTweets do feed: \n");
+            /*for (int i = (tweets.size() - 1); i >= (tweets.size() - quant); i--) { //
+                System.out.println(tweets.get(i) + "\n");
+    
+            }*/
+            for (int i = (tweets.size() - (quant)); i < (tweets.size()); i++) { //
+                System.out.println(tweets.get(i) + "\n");
+            }
+
+        }/*else if (tweets.size() < quant){
+            System.out.println("Não há tweets suficientes para exibir o número solicitado");
         }
+ */
+        else if (tweets.size() > quant){
+            System.out.println("Não há tweets suficientes para exibir o número solicitado");
+            return;
+        }
+        
     }
 
     public static void alterarSenha(ArrayList<Usuario> usuarios) {
@@ -161,27 +187,83 @@ public class Twitter {
     }
 
     public static void removeTweetDeUsuario(ArrayList<Usuario> usuarios) {
-        boolean usuarioEncontrado = false;
-        int indice=0;
         System.out.print("\nDigite o login que deseja remover o tweet: ");
         String login = leitor.nextLine();
         for(Usuario usuario : usuarios) {
             if (usuario.getLogin().equals(login)){ 
                 for(String tweet : tweets) {
                     if(tweet.contains(login + ":")) {
-                        indice = indice + 1;
-                        System.out.println(indice + " - " + tweet);
+                        System.out.println(tweet);
 
                     }
                 }
-                System.out.println("Digite o número do índice do tweet que deseja excluir");
-                int indiceRemove = leitor.nextInt();
-                leitor.nextLine();
-                int contador = 0;
+                System.out.println("Digite o número do índice do tweet que deseja excluir: ");
+                String indiceRemover = leitor.nextLine();
+
+                for(String tweet : tweets){
+                    if(tweet.contains(indiceRemover + " - ")){
+                        tweets.remove(tweet);
+                        System.out.println("Tweet removido!");
+                        break;
+                    }
+                }
                 
             }
         }
     }
+
+    public static void removeUsuario(ArrayList<Usuario> usuarios) {
+        System.out.println("\nDigite o login do usuario que deseja remover: ");
+        String login = leitor.nextLine();
+        System.out.println("\nDigite a senha do usuario que deseja remover: ");
+        String senha = leitor.nextLine();
+        for(Usuario usuario : usuarios) {
+            if (usuario.getLogin().equals(login) && usuario.getSenha().equals(senha)){ 
+                usuarios.remove(usuario);
+                System.out.println("usuario removido!");
+                break;
+            }
+        }
+    }
+
+    public static void imprimirEstatisticas() {
+        int estatisticaUser = usuarios.size();
+        System.out.println("\nNúmero total de usuários cadastrados:" + estatisticaUser);
+
+        int numUsuariosLogados = 0;
+        for (Usuario usuario : usuarios) {
+            if (usuario.getLogado()) {
+                numUsuariosLogados++;
+            }
+        }
+        System.out.println("\nNúmero de usuários logados neste momento: " + numUsuariosLogados);
+
+        int numTweets = tweets.size();
+        System.out.println("\nNúmero de tweets no total:" + numTweets);
+
+        int maiorTweetador = 0;
+
+        String usuarioMaiorTweetador = ""; 
+        for (Usuario usuario : usuarios) {
+            int numTweetsUsuario = 0; 
+            for(String tweet : tweets){
+                if(tweet.contains(usuario.getLogin() + ":")){
+                    numTweetsUsuario = numTweetsUsuario + 1;
+                    if(numTweetsUsuario > maiorTweetador){
+                        maiorTweetador = numTweetsUsuario;
+                        usuarioMaiorTweetador = usuario.getLogin();
+                    }
+                    
+                }
+            }   
+            System.out.println("\n" + usuario.getLogin() + " têm " + numTweetsUsuario + " postados no feed." );
+        }
+        System.out.println("\n" + usuarioMaiorTweetador + " é o maior tweetador com " + maiorTweetador + " tweets." );
+
+        System.out.println("O usuário " + ultimoTweetador + " é o último tweetador com o seguinte tweet: " + ultimoTweet);
+
+    }
+    
     
     public static void main(String[] args) {
         String text = "";
@@ -214,9 +296,9 @@ public class Twitter {
             } else if (text.equals("8")) {
                 alterarSenha(usuarios);
             } else if (text.equals("9")) {
-         
+                removeUsuario(usuarios);  
             } else if (text.equals("10")) {
-         
+                imprimirEstatisticas();
             } else if (text.equals("0")) {
                 System.out.println("Encerrando o programa...");
                 finalizar = true;
