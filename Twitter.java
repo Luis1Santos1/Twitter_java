@@ -10,8 +10,21 @@ public class Twitter {
     // Cria o usuário dentro de um array
     public static Usuario criaUsuario() {
 
-        System.out.print("\nCrie o seu nome: ");
-        String nome = leitor.nextLine();
+        boolean nomeNOk = true;
+        String nome = "";
+
+        while (nomeNOk == true){
+            System.out.print("\nCrie o seu nome: ");
+            nome = leitor.nextLine();
+
+            nomeNOk = false;
+            if(nome.length() < 2 || nome.length() > 30){
+                System.out.println("O nome deve ter no mínimo 2 e no máximo 30 caracteres!");
+                nomeNOk = true;
+                nome = "";
+                break;
+            }
+        }
 
         String login = "";
         boolean loginExistente = true;
