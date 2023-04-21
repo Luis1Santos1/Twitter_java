@@ -102,7 +102,6 @@ public class Twitter {
                 if (usuario.getLogin().equals(usuarioParaTweetar)){ 
                     System.out.println("\nDigite o seu tweet: ");
                     String conteudoTweet = leitor.nextLine();
-
                     String tweet = usuario.getLogin() + ": " + conteudoTweet;
                     tweets.add(tweet);
 
@@ -117,7 +116,7 @@ public class Twitter {
         }
     }
 
-    public static void MostraTweetsFeed() {
+    public static void mostraTweetsFeed() {
         System.out.println("\nDigite a quantidade de tweets que deseja visualizar: ");
         int quant = leitor.nextInt();
         leitor.nextLine();
@@ -147,6 +146,29 @@ public class Twitter {
             }
         }
     }
+
+    public static void removeTweetDeUsuario(ArrayList<Usuario> usuarios) {
+        boolean usuarioEncontrado = false;
+        int indice=0;
+        System.out.print("\nDigite o login que deseja remover o tweet: ");
+        String login = leitor.nextLine();
+        for(Usuario usuario : usuarios) {
+            if (usuario.getLogin().equals(login)){ 
+                for(String tweet : tweets) {
+                    if(tweet.contains(login + ":")) {
+                        indice = indice + 1;
+                        System.out.println(indice + " - " + tweet);
+
+                    }
+                }
+                System.out.println("Digite o número do índice do tweet que deseja excluir");
+                int indiceRemove = leitor.nextInt();
+                leitor.nextLine();
+                int contador = 0;
+                
+            }
+        }
+    }
     
     public static void main(String[] args) {
         String text = "";
@@ -173,9 +195,9 @@ public class Twitter {
             } else if (text.equals("5")) {
                 tweetar();
             } else if (text.equals("6")) {
-                MostraTweetsFeed();
+                mostraTweetsFeed();
             } else if (text.equals("7")) {
-           
+                removeTweetDeUsuario(usuarios);
             } else if (text.equals("8")) {
                 alterarSenha(usuarios);
             } else if (text.equals("9")) {
