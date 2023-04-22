@@ -11,20 +11,19 @@ public class Twitter {
 
     // Cria o usuário dentro de um array
     public static Usuario criaUsuario() {
+
         boolean nomeNOk = false;
         String nome = "";
 
-        while (nomeNOk == false){
-            System.out.print("\nCrie o seu nome: ");
+        while (nomeNOk == false) {
+            System.out.print("Crie o seu nome: ");
             nome = leitor.nextLine();
-            
-            
-            if(nome.length() >= 2 && nome.length() <= 30){
+
+            if (nome.length() >= 2 && nome.length() <= 30) {
                 nomeNOk = true;
                 break;
-            }
-            else if (nome.length() < 2 || nome.length() > 30) {
-                System.out.println("O nome deve ter entre 2 e 30 caracteres!");
+            } else if (nome.length() < 2 || nome.length() > 30) {
+                System.out.print("O nome deve ter entre 2 e 30 caracteres! \n");
                 nome = "";
                 nomeNOk = false;
             }
@@ -32,25 +31,69 @@ public class Twitter {
 
         String login = "";
         boolean loginExistente = true;
+        boolean loginNOK = false;
 
-        // enquanto for verdadeiro ele vai entrar
         while (loginExistente == true) {
-            System.out.print("Crie o seu login: ");
-            login = leitor.nextLine();
+            while (loginNOK == false) {
+                System.out.print("Crie o seu login: ");
+                login = leitor.nextLine();
+
+                if (login.length() >= 2 && login.length() <= 20) {
+                    loginNOK = true;
+                    break;
+                } else if (login.length() < 2 || login.length() > 20) {
+                    System.out.print("O login deve ter entre 2 e 20 caracteres! \n");
+                    login = "";
+                    loginNOK = false;
+                }
+            }
 
             loginExistente = false;
             for (Usuario usuario : usuarios) {
                 if (usuario.getLogin().equals(login)) {
-                    System.out.println("Login já existente. Por favor, tente novamente. \n");
+                    System.out.println("Login já existente. Por favor, tente novamente. ");
                     loginExistente = true;
                     login = "";
+                    System.out.print("Crie o seu login: ");
+                    login = leitor.nextLine();
+                    break;
                 }
             }
         }
-        System.out.print("Crie seu email: ");
-        String email = leitor.nextLine();
-        System.out.print("Crie sua senha: ");
-        String senha = leitor.nextLine();
+
+        String email = "";
+        boolean emailNOK = false;
+
+        while (emailNOK == false) {
+            System.out.print("Crie o seu email: ");
+            email = leitor.nextLine();
+
+            if (email.length() >= 6 && login.length() <= 30) {
+                emailNOK = true;
+                break;
+            } else if (email.length() < 6 || email.length() > 30) {
+                System.out.print("O email deve ter entre 6 e 30 caracteres! \n");
+                email = "";
+                emailNOK = false;
+            }
+        }
+
+        String senha = "";
+        boolean senhaNOK = false;
+
+        while (senhaNOK == false) {
+            System.out.print("Crie sua senha: ");
+            senha = leitor.nextLine();
+
+            if (senha.length() >= 6 && senha.length() <= 15) {
+                senhaNOK = true;
+                break;
+            } else if (senha.length() < 6 || senha.length() > 30) {
+                System.out.print("A senha deve ter entre 6 e 15 caracteres! \n");
+                senha = "";
+                senhaNOK = false;
+            }
+        }
 
         Usuario novoUsuario = new Usuario(nome, login, email, senha);
         usuarios.add(novoUsuario);
@@ -59,20 +102,18 @@ public class Twitter {
 
         return novoUsuario;
     }
-
     // lista usuarios cadastrados
     public static void listaUsuarios() {
         System.out.println("\nUsuarios cadastrados: ");
-        if(usuarios.size() > 0) {
+        if (usuarios.size() > 0) {
             for (Usuario usuario : usuarios) {
                 System.out.println("\nUsuario: " + usuario.getLogin() + " || Status: " + usuario.getLogado() + "");
             }
-        }else if (usuarios.size() == 0) {
+        } else if (usuarios.size() == 0) {
             System.out.println("Não existe nenhum usuário cadastrado!");
         }
 
     }
-
     // loga em um usuario ja cadastrado
     public static void logUsuario(ArrayList<Usuario> usuarios) {
         System.out.print("Digite seu login para logar: \n");
@@ -89,7 +130,7 @@ public class Twitter {
                 break;
             }
         }
-        if (!loginEfetuado){
+        if (!loginEfetuado) {
             System.out.println("Usuário ou senha incorreto");
         }
     }
@@ -113,30 +154,42 @@ public class Twitter {
         }
     }
 
-
     public static void tweetar() {
+        boolean tweetarNOK = false;
         boolean encontrouUsuario = false;
-        System.out.println("\nDigite o login do usuario que deseja tweetar: ");
+        System.out.print("Digite o login do usuario que deseja tweetar: ");
         String usuarioParaTweetar = leitor.nextLine();
+
         for (Usuario usuario : usuarios) {
             if (usuario.logado == true) {
-                if (usuario.getLogin().equals(usuarioParaTweetar)){ 
-                    System.out.println("\nDigite o seu tweet: ");
-                    String conteudoTweet = leitor.nextLine();
-                    int indice = tweets.size() + 1;
-                    String tweet = indice + " - " + usuario.getLogin() + ": " + conteudoTweet;
-                    tweets.add(tweet);
+                if (usuario.getLogin().equals(usuarioParaTweetar)) {
+                    while (tweetarNOK == false) {
+                        System.out.print("\nDigite o seu tweet: ");
+                        String conteudoTweet = leitor.nextLine();
 
-                    System.out.println("\nTweet enviado!");
-                    encontrouUsuario = true;
-                    ultimoTweetador = usuario.getLogin();
-                    ultimoTweet = tweet;
-                    break;
+                        if (conteudoTweet.length() >= 1 && conteudoTweet.length() <= 140) {
+
+                            int indice = tweets.size() + 1;
+                            String tweet = indice + " - " + usuario.getLogin() + ": " + conteudoTweet;
+                            tweets.add(tweet);
+
+                            System.out.println("\nTweet enviado!");
+                            encontrouUsuario = true;
+                            ultimoTweetador = usuario.getLogin();
+                            ultimoTweet = tweet;
+                            break;
+                        } else if (conteudoTweet.length() < 1 || conteudoTweet.length() > 140) {
+                            System.out.print("O tweet deve ter entre 1 e 140 caracteres! \n");
+                            conteudoTweet = "";
+                            tweetarNOK = false;
+                        }
+                    }
                 }
             }
-        }
-        if (!encontrouUsuario) {
-            System.out.println("Nenhum usuário encontrado ou logado! \n\n");
+            else if(!encontrouUsuario) {
+                System.out.println("Nenhum usuário encontrado ou logado! \n");
+                break;
+            }
         }
     }
 
@@ -144,25 +197,29 @@ public class Twitter {
         System.out.println("\nDigite a quantidade de tweets que deseja visualizar: ");
         int quant = leitor.nextInt();
         leitor.nextLine();
-        if(tweets.size() >= quant){
+        if (tweets.size() >= quant) {
             System.out.println("\nTweets do feed: \n");
-            /*for (int i = (tweets.size() - 1); i >= (tweets.size() - quant); i--) { //
-                System.out.println(tweets.get(i) + "\n");
-    
-            }*/
+            /*
+             * for (int i = (tweets.size() - 1); i >= (tweets.size() - quant); i--) { //
+             * System.out.println(tweets.get(i) + "\n");
+             * 
+             * }
+             */
             for (int i = (tweets.size() - (quant)); i < (tweets.size()); i++) { //
                 System.out.println(tweets.get(i) + "\n");
             }
 
-        }/*else if (tweets.size() < quant){
-            System.out.println("Não há tweets suficientes para exibir o número solicitado");
-        }
- */
-        else if (tweets.size() > quant){
-            System.out.println("Não há tweets suficientes para exibir o número solicitado");
+        } /*
+           * else if (tweets.size() < quant){
+           * System.out.
+           * println("Não há tweets suficientes para exibir o número solicitado");
+           * }
+           */
+        else {
+            System.out.println("\nNão há tweets suficientes para exibir o número solicitado");
             return;
         }
-        
+
     }
 
     public static void alterarSenha(ArrayList<Usuario> usuarios) {
@@ -172,7 +229,7 @@ public class Twitter {
         System.out.print("Digite a senha atual: ");
         String senhaAtual = leitor.nextLine();
         for (Usuario usuario : usuarios) {
-            if(login.equals(usuario.getLogin()) && senhaAtual.equals(usuario.getSenha())){
+            if (login.equals(usuario.getLogin()) && senhaAtual.equals(usuario.getSenha())) {
                 System.out.print("Digite a nova senha: ");
                 String novaSenha = leitor.nextLine();
                 usuario.setSenha(novaSenha);
@@ -189,10 +246,10 @@ public class Twitter {
     public static void removeTweetDeUsuario(ArrayList<Usuario> usuarios) {
         System.out.print("\nDigite o login que deseja remover o tweet: ");
         String login = leitor.nextLine();
-        for(Usuario usuario : usuarios) {
-            if (usuario.getLogin().equals(login)){ 
-                for(String tweet : tweets) {
-                    if(tweet.contains(login + ":")) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getLogin().equals(login)) {
+                for (String tweet : tweets) {
+                    if (tweet.contains(login + ": ")) {
                         System.out.println(tweet);
 
                     }
@@ -200,14 +257,14 @@ public class Twitter {
                 System.out.println("Digite o número do índice do tweet que deseja excluir: ");
                 String indiceRemover = leitor.nextLine();
 
-                for(String tweet : tweets){
-                    if(tweet.contains(indiceRemover + " - ")){
+                for (String tweet : tweets) {
+                    if (tweet.contains(indiceRemover + " - ")) {
                         tweets.remove(tweet);
                         System.out.println("Tweet removido!");
                         break;
                     }
                 }
-                
+
             }
         }
     }
@@ -217,11 +274,13 @@ public class Twitter {
         String login = leitor.nextLine();
         System.out.println("\nDigite a senha do usuario que deseja remover: ");
         String senha = leitor.nextLine();
-        for(Usuario usuario : usuarios) {
-            if (usuario.getLogin().equals(login) && usuario.getSenha().equals(senha)){ 
+        for (Usuario usuario : usuarios) {
+            if (usuario.getLogin().equals(login) && usuario.getSenha().equals(senha)) {
                 usuarios.remove(usuario);
                 System.out.println("usuario removido!");
                 break;
+            }else{
+                System.out.println("senha ou login errado tente novamente");
             }
         }
     }
@@ -243,28 +302,28 @@ public class Twitter {
 
         int maiorTweetador = 0;
 
-        String usuarioMaiorTweetador = ""; 
+        String usuarioMaiorTweetador = "";
         for (Usuario usuario : usuarios) {
-            int numTweetsUsuario = 0; 
-            for(String tweet : tweets){
-                if(tweet.contains(usuario.getLogin() + ":")){
+            int numTweetsUsuario = 0;
+            for (String tweet : tweets) {
+                if (tweet.contains(usuario.getLogin() + ":")) {
                     numTweetsUsuario = numTweetsUsuario + 1;
-                    if(numTweetsUsuario > maiorTweetador){
+                    if (numTweetsUsuario > maiorTweetador) {
                         maiorTweetador = numTweetsUsuario;
                         usuarioMaiorTweetador = usuario.getLogin();
                     }
-                    
-                }
-            }   
-            System.out.println("\n" + usuario.getLogin() + " têm " + numTweetsUsuario + " postados no feed." );
-        }
-        System.out.println("\n" + usuarioMaiorTweetador + " é o maior tweetador com " + maiorTweetador + " tweets." );
 
-        System.out.println("O usuário " + ultimoTweetador + " é o último tweetador com o seguinte tweet: " + ultimoTweet);
+                }
+            }
+            System.out.println("\n" + usuario.getLogin() + " têm " + numTweetsUsuario + " tweets postados no feed.");
+        }
+        System.out.println("\n" + usuarioMaiorTweetador + " é o maior tweetador com " + maiorTweetador + " tweets.\n");
+
+        System.out
+                .println("O usuário " + ultimoTweetador + " é o último tweetador com o seguinte tweet: " + ultimoTweet);
 
     }
-    
-    
+
     public static void main(String[] args) {
         String text = "";
         boolean finalizar = false;
@@ -296,7 +355,7 @@ public class Twitter {
             } else if (text.equals("8")) {
                 alterarSenha(usuarios);
             } else if (text.equals("9")) {
-                removeUsuario(usuarios);  
+                removeUsuario(usuarios);
             } else if (text.equals("10")) {
                 imprimirEstatisticas();
             } else if (text.equals("0")) {
