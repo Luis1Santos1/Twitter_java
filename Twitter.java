@@ -238,7 +238,7 @@ public class Twitter {
                 break;
             }
             if (!usuarioEncontrado) {
-                System.out.println("Nenhum usuário encontrado ou logado! \n\n");
+                System.out.println("Nenhum usuário encontrado ou logado! \n");
             }
         }
     }
@@ -270,6 +270,7 @@ public class Twitter {
     }
 
     public static void removeUsuario(ArrayList<Usuario> usuarios) {
+        boolean usuarioCerto = false;
         System.out.println("\nDigite o login do usuario que deseja remover: ");
         String login = leitor.nextLine();
         System.out.println("\nDigite a senha do usuario que deseja remover: ");
@@ -278,10 +279,12 @@ public class Twitter {
             if (usuario.getLogin().equals(login) && usuario.getSenha().equals(senha)) {
                 usuarios.remove(usuario);
                 System.out.println("usuario removido!");
+                usuarioCerto = true;
                 break;
-            }else{
-                System.out.println("senha ou login errado tente novamente");
             }
+        }
+        if (!usuarioCerto) {
+            System.out.println("\nUsuario ou senha incorretos\n");
         }
     }
 
@@ -329,23 +332,17 @@ public class Twitter {
         boolean finalizar = false;
 
         while (!finalizar) {
-            System.out.println(
-                    "\n-- 1 Cadastrar Usuário\n-- 2 Listar Usuários\n-- 3 Logar Usuário\n-- 4 Deslogar Usuario\n-- 5 Tweetar\n-- 6 mostrar últimos N tweets do feed\n-- 7 remover tweet de um usuário\n-- 8 alterar senha de um usuário\n-- 9 remover um usuário\n-- 10 imprimir estatísticas\n-- 0 Finalizar Programa");
-
+            System.out.println("\n-- 1 Cadastrar Usuário\n-- 2 Listar Usuários\n-- 3 Logar Usuário\n-- 4 Deslogar Usuario\n-- 5 Tweetar\n-- 6 mostrar últimos N tweets do feed\n-- 7 remover tweet de um usuário\n-- 8 alterar senha de um usuário\n-- 9 remover um usuário\n-- 10 imprimir estatísticas\n-- 0 Finalizar Programa");
             text = leitor.nextLine();
 
             if (text.equals("1")) {
                 criaUsuario();
-
             } else if (text.equals("2")) {
                 listaUsuarios();
-
             } else if (text.equals("3")) {
                 logUsuario(usuarios);
-
             } else if (text.equals("4")) {
                 deslogUsuario(usuarios);
-
             } else if (text.equals("5")) {
                 tweetar();
             } else if (text.equals("6")) {
